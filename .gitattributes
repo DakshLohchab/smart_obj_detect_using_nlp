@@ -1,0 +1,2 @@
+*.ipynb filter=lfs diff=lfs merge=lfs -text
+C:/Users/devishree[[:space:]]rana/OneDrive/Desktop/Projects/smart_obj_detect_using_nlp/smart_obj_detect.ipynb filter=lfs diff=lfs merge=lfs -text
