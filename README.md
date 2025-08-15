@@ -1,50 +1,71 @@
-Robust Scene Detection using GroundingDINO and Gemini
+Advanced Scene Detection System
+This repository contains the Advanced Scene Detection System, a Python script designed for nuanced and accurate analysis of human activities within images. The system combines GroundingDINO for object detection and Google's Gemini model for contextual reasoning, offering robust scene detection with confidence scoring and rich visualizations.
+Overview
+The system leverages a hybrid approach to move beyond simple object labeling, understanding relationships between objects and people, verifying activities, and providing confidence scores. Key features include:
 
-This project provides an advanced, multi-layered pipeline for detecting complex scenes and human activities in images. It goes beyond simple object detection by combining the open-set detection capabilities of GroundingDINO with the powerful reasoning and verification abilities of Google's Gemini Pro model.
+General-Purpose Scene Detection: Analyze any custom scene (e.g., "people shopping," "a group protesting").
+Specialized Activity Modules: Optimized for complex activities like cooking and talking.
+Multi-Layered Analysis: Includes element detection, contextual scoring, AI verification, and robust decision-making.
+Rich Visualizations: Detailed outputs showing detected elements and primary activities.
 
-The system takes an image and a natural language query (e.g., "people having a conversation") and produces a robust, evidence-based conclusion on whether the scene is present, complete with detailed visualizations and analytics.
+Setup and Installation
+Prerequisites
 
-✨ Core Features
-Multi-Stage Object Detection: Uses GroundingDINO with dynamically generated text prompts to find all objects relevant to a scene query.
+Python 3.8 or higher
+pip (Python package manager)
 
-Multi-Method AI Verification: Employs three distinct methods to verify the scene, reducing false positives:
+Dependencies
+Install the required Python libraries using pip:
+pip install groundingdino-py google-generativeai pillow matplotlib opencv-python torch
 
-    (1) Full Image Analysis: Gemini analyzes the entire image for context.
+Model Weights and Configuration
+The system requires pre-trained model weights for GroundingDINO. Follow these steps to download and set them up:
 
-    (2)Focused Crop Analysis: Gemini analyzes a tight crop around detected objects for detail.
+Create necessary directories:
+mkdir -p config weights
 
-    (3)Pattern Analysis: A rule-based system checks the patterns of detected objects without an API call.
 
-    (4)Spatial & Contextual Analysis: Analyzes the spatial relationships (e.g., proximity of people) between detected objects to infer activities.
+Download the configuration file:
+wget -O config/GroundingDINO_SwinT_OGC.py https://raw.githubusercontent.com/IDEA-Research/GroundingDINO/main/groundingdino/config/GroundingDINO_SwinT_OGC.py
 
-    (5)Robust Decision Logic: Aggregates evidence from all stages using a weighted scoring system to make a final, confident decision.
 
-    (5)Comprehensive Visualization: Generates rich, easy-to-understand outputs, including annotated images, analytics dashboards, and detailed text summaries.
+Download the model weights:
+wget -O weights/groundingdino_swint_ogc.pth https://github.com/IDEA-Research/GroundingDINO/releases/download/v0.1.0-alpha/groundingdino_swint_ogc.pth
 
-    (6)Batch Processing: Includes a utility script to process multiple images against multiple queries automatically, saving all outputs to a specified folder.
 
-⚙️ How It Works
-The detection pipeline follows a systematic, evidence-gathering process:
 
-    (1)Image Pre-processing: The input image is standardized, resized, and optimized for analysis.
+API Key Configuration
+The system uses the Google Generative AI API for verification. Obtain an API key from the Google Cloud Console and configure it as follows:
 
-    (2)Object Detection (GroundingDINO): Relevant objects are identified using a series of text prompts related to the main scene query. Detections are filtered for relevance and redundancy (IoU).
+Open the script (e.g., main.py).
+Locate the configuration section and replace "YOUR_API_KEY_HERE" with your API key:# Configuration
+API_KEY = "YOUR_API_KEY_HERE"  # <-- Replace with your key
+genai.configure(api_key=API_KEY)
 
-    (3)Evidence Verification (Gemini & Rule-Based): The initial findings are rigorously checked using the three verification methods described above.
 
-    (4)Spatial Analysis: The positions and clustering of key objects (like people) are scored to add contextual evidence.
+Note: Treat your API key as a password and do not expose it in public repositories.
 
-    (4)Final Decision (Weighted Scoring): A final confidence score is calculated by combining the weighted results from the detection, verification, and spatial analysis stages.
+Running the System
 
-    (5)Report Generation: Visualizations and a text summary are generated and saved.
+Ensure all dependencies and model weights are installed and configured.
+Run the script with an image path and desired scene description:python main.py --image /path/to/image.jpg --scene "people walking in a busy street"
 
-🛠️ Tech Stack & Models
-    (1)Object Detection: GroundingDINO
 
-    (2)LLM Verification & Reasoning: Google Gemini
 
-    (3)Deep Learning Framework: PyTorch
+Usage
+The system provides simple and advanced detection functions:
 
-    (4)Image Processing & Visualization: Matplotlib, Pillow, OpenCV
+detect_scene(scene_description, image_path, confidence=0.6): Returns a boolean (True/False) for scene detection.
+detect_scene_advanced(scene_description, image_path, confidence=0.6): Returns a detailed dictionary with confidence scores and analysis.
 
-    (5)Numerical Operations: NumPy
+Example:
+from main import detect_scene
+
+image_file = "/path/to/image.jpg"
+if detect_scene("people walking in a busy street", image_file):
+    print("Scene detected!")
+
+Contributing
+Contributions are welcome! Please fork the repository and submit pull requests with improvements or bug fixes.
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
